@@ -76,5 +76,8 @@
 - What is the **maximum number of users** expected for the pilot phase?  
 
 ---
-
+### Traceability
+- Linked to [User Stories](./3_UserStories.md)
+- Linked to [Use Case Diagram](./4_UseCaseDiagram.md)
+  
 © 2025 Anastasiia Desiateryk — Internal Project Documentation
