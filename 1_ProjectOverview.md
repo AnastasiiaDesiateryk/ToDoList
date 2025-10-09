@@ -11,7 +11,7 @@
 
 | Document | Description |
 |-----------|--------------|
-| [2_Requirements_ToDoApp.md](./2_Requirements_ToDoApp.md) | Detailed functional & non-functional requirements for the To-Do Application. |
+| [2_Requirements_ToDoApp.md](./docs/2_Requirements_ToDoApp.md) | Detailed functional & non-functional requirements for the To-Do Application. |
 | [3_UserStories.md](./3_UserStories.md) | User stories with acceptance criteria. |
 | [4_UseCaseDiagram.md](./4_UseCaseDiagram.md) | Use case diagram and system interaction overview. |
 
