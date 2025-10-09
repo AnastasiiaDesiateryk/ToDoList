@@ -9,6 +9,23 @@
 
 ---
 
+| Document | Description |
+|-----------|--------------|
+| [2_Requirements_ToDoApp.md](./2_Requirements_ToDoApp.md) | Detailed functional & non-functional requirements for the To-Do Application. |
+| [3_UserStories.md](./3_UserStories.md) | User stories with acceptance criteria. |
+| [4_UseCaseDiagram.md](./4_UseCaseDiagram.md) | Use case diagram and system interaction overview. |
+
+---
+
+### Traceability
+This document acts as the **root of the project documentation tree**.  
+Each linked file elaborates a different layer of the MVP:
+- Requirements → define the “what”  
+- User stories → describe the “how” from the user’s view  
+- Use case diagram → visualizes the “who interacts with what”  
+
+---
+
 ## 1. Purpose and Scope
 
 The **To-Do List Application** is an internal productivity tool (MVP) that allows authenticated users to create, organize, and manage personal tasks.  
