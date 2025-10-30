@@ -127,7 +127,7 @@ The application follows a **modern client–server architecture** with a **state
 
 ---
 
-### 📊 Observability & Operations
+###  Observability & Operations
 - **Actuator** — health / readiness / liveness probes.  
 - **Logging:** standard pattern (Logback encoder → JSON optional).  
 - **Cookies:** Secure + HttpOnly in production; Bearer mode allowed for dev CLI.  
@@ -136,7 +136,7 @@ The application follows a **modern client–server architecture** with a **state
 
 
 
-### 💡 Why This Stack
+###  Why This Stack
 - **Spring Boot + JPA** — fast path to consistent transactional CRUD.  
 - **Nimbus JOSE + JWT** — lightweight, battle-tested JWT stack.  
 - **Flyway** — reliable schema control for team and CI/CD.  
