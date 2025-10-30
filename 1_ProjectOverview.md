@@ -50,7 +50,7 @@ The application follows a **modern client–server architecture** with a **state
 - **Authentication:** Google Sign-In (Firebase) → JWT verification via **Nimbus JOSE + JWT**; internal token issued as **HttpOnly cookie (`APP_AUTH`)**.  
 - **Backend:** Java 21 / Spring Boot 3.3 REST API with layered architecture (`web`, `security`, `service`, `repository`, `entity`, `dto`).  
 - **Database:** PostgreSQL 16 with Flyway migrations, JPA/Hibernate 6, and JSON-based metadata fields.  
-- **Deployment:** Cloud-hosted on Render / Kubernetes (Azure App Service compatible).  
+- **Deployment:** Cloud-hosted on Render.  
 - **Communication:** All traffic secured via HTTPS; frontend ↔ backend interaction over JSON/REST.  
 - **Observability:** Spring Boot Actuator endpoints for health, metrics, and readiness probes.  
 
