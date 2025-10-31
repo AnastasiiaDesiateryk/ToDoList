@@ -6,7 +6,7 @@ export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // 1) единый рефетч
+  // Unified refetch logic (shared across operations)
   const refresh = useCallback(async () => {
     try {
       const list = await api.listTasks();
@@ -16,7 +16,7 @@ export function useTasks() {
     }
   }, []);
 
-  // загрузка с бэка
+  // Initial load on mount
   useEffect(() => {
     (async () => {
       try {
@@ -30,6 +30,7 @@ export function useTasks() {
     })();
   }, []);
 
+  // Add new task + background refresh
   const addTask = async (
     data: Omit<Task, "id" | "createdAt" | "updatedAt" | "version">
   ) => {
@@ -48,7 +49,7 @@ export function useTasks() {
     // фоновый рефетч — вдруг бэк доресчитал поля
     refresh();
   };
-
+  // Update task + background refresh
   const updateTask = async (id: string, updates: Partial<Task>) => {
     const current = tasks.find((t) => t.id === id);
     if (!current || current.version == null) return;
