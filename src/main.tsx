@@ -23,7 +23,7 @@ function AuthGate() {
     return <Login />;
   }
 
-  return <App />; // твой оригинальный интерфейс
+  return <App />;
 }
 
 createRoot(document.getElementById("root")!).render(
