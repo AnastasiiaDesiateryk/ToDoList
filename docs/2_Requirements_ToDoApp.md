@@ -63,10 +63,10 @@
 - Limited to **internal resources** (no external vendor costs).  
 
 ### 3.3 Technology  
-- **Backend:** PostgreSQL, Node.js / Express  
+- **Backend:** PostgreSQL, Java  
 - **Frontend:** React (Vite)  
-- **Deployment:** Kubernetes  
-- **Testing:** Selenium  
+- **Deployment:**   
+- **Testing:** 
 
 ---
 
