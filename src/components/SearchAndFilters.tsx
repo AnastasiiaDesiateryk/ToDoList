@@ -124,7 +124,7 @@ export function SearchAndFilters({
             <SelectItem value="completed">Completed</SelectItem>
           </SelectContent>
         </Select>
-
+        {/* clear Filters */}
         {hasActiveFilters && (
           <Button
             variant="outline"
