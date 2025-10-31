@@ -100,6 +100,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1">
+                {/* line through */}
                 <h3
                   className={`font-medium mb-1 ${
                     task.completed ? "line-through text-muted-foreground" : ""
