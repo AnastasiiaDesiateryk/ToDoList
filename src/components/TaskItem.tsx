@@ -178,7 +178,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                 </AlertDialog>
               </div>
             </div>
-            {/* badge */}
+            {/* badges */}
             <div className="flex flex-wrap items-center gap-2 mt-2">
               <Badge
                 className={`${getPriorityColor(task.priority)} text-white`}

@@ -1,4 +1,4 @@
-// tasks
+// task
 export type Priority = "High" | "Medium" | "Low";
 export type Category = "Work" | "Personal";
 
