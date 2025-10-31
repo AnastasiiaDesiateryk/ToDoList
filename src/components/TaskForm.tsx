@@ -69,7 +69,7 @@ export function TaskForm({ task, onSubmit, onCancel, mode }: TaskFormProps) {
       completed: task?.completed || false,
     });
 
-    // Reset form if adding new task
+    //Reset form if adding new task
     if (mode === "add") {
       setTitle("");
       setDescription("");
