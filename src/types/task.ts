@@ -1,3 +1,4 @@
+// tasks
 export type Priority = "High" | "Medium" | "Low";
 export type Category = "Work" | "Personal";
 
@@ -12,10 +13,8 @@ export interface Task {
   createdAt: string;
   updatedAt: string;
 
-  // ⬇️ нужно для PATCH (If-Match)
   version?: number;
 
-  // опционально, если используешь
   tags?: string[];
   metadata?: Record<string, unknown>;
   ownerId?: string;
