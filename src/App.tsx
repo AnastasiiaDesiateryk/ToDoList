@@ -70,6 +70,9 @@ export default function App() {
   const handleCancelEdit = () => {
     setEditingTask(null);
   };
+  {
+    /* Log out */
+  }
   const { logout } = useAuth();
   const [shareOpen, setShareOpen] = useState(false);
 
