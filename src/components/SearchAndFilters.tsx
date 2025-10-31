@@ -1,10 +1,16 @@
-import React from 'react';
-import { TaskFilters, Priority, Category } from '../types/task';
-import { Input } from './ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Search, X } from 'lucide-react';
+import React from "react";
+import { TaskFilters, Priority, Category } from "../types/task";
+import { Input } from "./ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Search, X } from "lucide-react";
 
 interface SearchAndFiltersProps {
   filters: TaskFilters;
@@ -17,28 +23,38 @@ interface SearchAndFiltersProps {
   };
 }
 
-export function SearchAndFilters({ filters, onFiltersChange, taskCounts }: SearchAndFiltersProps) {
+export function SearchAndFilters({
+  filters,
+  onFiltersChange,
+  taskCounts,
+}: SearchAndFiltersProps) {
   const clearFilters = () => {
     onFiltersChange({
-      search: '',
+      search: "",
       category: undefined,
       priority: undefined,
       completed: undefined,
     });
   };
 
-  const hasActiveFilters = filters.search || filters.category || filters.priority || filters.completed !== undefined;
+  const hasActiveFilters =
+    filters.search ||
+    filters.category ||
+    filters.priority ||
+    filters.completed !== undefined;
 
   return (
     <div className="space-y-4">
-      {/* Search Bar */}
+      {/* Search Bar Search tasks by title or description */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
           placeholder="Search tasks by title or description..."
           value={filters.search}
-          onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
+          onChange={(e) =>
+            onFiltersChange({ ...filters, search: e.target.value })
+          }
           className="pl-10"
         />
       </div>
@@ -46,11 +62,11 @@ export function SearchAndFilters({ filters, onFiltersChange, taskCounts }: Searc
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
         <Select
-          value={filters.category || 'all'}
-          onValueChange={(value) => 
-            onFiltersChange({ 
-              ...filters, 
-              category: value === 'all' ? undefined : value as Category 
+          value={filters.category || "all"}
+          onValueChange={(value) =>
+            onFiltersChange({
+              ...filters,
+              category: value === "all" ? undefined : (value as Category),
             })
           }
         >
@@ -65,11 +81,11 @@ export function SearchAndFilters({ filters, onFiltersChange, taskCounts }: Searc
         </Select>
 
         <Select
-          value={filters.priority || 'all'}
-          onValueChange={(value) => 
-            onFiltersChange({ 
-              ...filters, 
-              priority: value === 'all' ? undefined : value as Priority 
+          value={filters.priority || "all"}
+          onValueChange={(value) =>
+            onFiltersChange({
+              ...filters,
+              priority: value === "all" ? undefined : (value as Priority),
             })
           }
         >
@@ -85,11 +101,17 @@ export function SearchAndFilters({ filters, onFiltersChange, taskCounts }: Searc
         </Select>
 
         <Select
-          value={filters.completed === undefined ? 'all' : filters.completed ? 'completed' : 'pending'}
-          onValueChange={(value) => 
-            onFiltersChange({ 
-              ...filters, 
-              completed: value === 'all' ? undefined : value === 'completed'
+          value={
+            filters.completed === undefined
+              ? "all"
+              : filters.completed
+              ? "completed"
+              : "pending"
+          }
+          onValueChange={(value) =>
+            onFiltersChange({
+              ...filters,
+              completed: value === "all" ? undefined : value === "completed",
             })
           }
         >
@@ -118,15 +140,9 @@ export function SearchAndFilters({ filters, onFiltersChange, taskCounts }: Searc
 
       {/* Task Summary */}
       <div className="flex flex-wrap gap-2">
-        <Badge variant="secondary">
-          Total: {taskCounts.total}
-        </Badge>
-        <Badge variant="secondary">
-          Pending: {taskCounts.pending}
-        </Badge>
-        <Badge variant="secondary">
-          Completed: {taskCounts.completed}
-        </Badge>
+        <Badge variant="secondary">Total: {taskCounts.total}</Badge>
+        <Badge variant="secondary">Pending: {taskCounts.pending}</Badge>
+        <Badge variant="secondary">Completed: {taskCounts.completed}</Badge>
         {taskCounts.overdue > 0 && (
           <Badge className="bg-red-500 hover:bg-red-600 text-white">
             Overdue: {taskCounts.overdue}
