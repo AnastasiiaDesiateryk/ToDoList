@@ -37,8 +37,11 @@ export async function addShare(
 }
 
 export async function removeShare(taskId: string, email: string) {
+  // ⬇️ ключ должен называться userEmail
+  const qs = new URLSearchParams({ userEmail: email }).toString();
   const res = await fetch(
-    `${base}/tasks/${taskId}/share?email=${encodeURIComponent(email)}`,
+    `${base}/tasks/${taskId}/share?${qs}`,
+    // `${base}/tasks/${taskId}/share?email=${encodeURIComponent(email)}`,
     {
       method: "DELETE",
       credentials: "include",

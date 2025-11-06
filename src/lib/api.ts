@@ -1,19 +1,32 @@
 // src/lib/api.ts
-const API = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL ?? "";
 
-// --- дата-конвертер ---
-function toIsoOrNull(input?: string): string | undefined {
+/** Преобразовать дату к формату, который ест OffsetDateTime:
+ *  - если уже ISO с временем (есть 'T') — вернуть как есть;
+ *  - если dd.mm.yyyy → yyyy-mm-dd;
+ *  - если yyyy-mm-dd → добавить 23:59:00 с локальным оффсетом.
+ */
+function normalizeDueDate(input?: string): string | undefined {
   if (!input) return undefined;
   const s = input.trim();
 
-  // dd.mm.yyyy -> yyyy-mm-dd
-  const m = s.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
-  const isoDate = m ? `${m[3]}-${m[2]}-${m[1]}` : s;
+  // 1) Уже ISO с временем (например, 2025-08-25T23:59:00Z или +01:00) — не трогаем.
+  if (/^\d{4}-\d{2}-\d{2}T/.test(s)) return s;
 
-  // ставим полдень, чтобы не уехать на -1 день из-за TZ
-  const d = new Date(`${isoDate}T12:00:00`);
-  if (isNaN(d.getTime())) return undefined;
-  return d.toISOString();
+  // 2) dd.mm.yyyy -> yyyy-mm-dd
+  const m = s.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+  const yyyyMmDd = m ? `${m[3]}-${m[2]}-${m[1]}` : s;
+
+  // 3) Если это не "yyyy-mm-dd" — считаем формат не нашим.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(yyyyMmDd)) return undefined;
+
+  // 4) Конец дня с локальным оффсетом: 23:59:00+HH:mm
+  const dt = new Date(`${yyyyMmDd}T23:59:00`);
+  const offMin = -dt.getTimezoneOffset();
+  const sign = offMin >= 0 ? "+" : "-";
+  const hh = String(Math.floor(Math.abs(offMin) / 60)).padStart(2, "0");
+  const mm = String(Math.abs(offMin) % 60).padStart(2, "0");
+  return `${yyyyMmDd}T23:59:00${sign}${hh}:${mm}`;
 }
 
 // --- сборщик заголовков ---
@@ -68,7 +81,7 @@ export const api = {
       method: "POST",
       body: JSON.stringify({
         ...payload,
-        dueDate: toIsoOrNull(payload.dueDate) ?? undefined,
+        dueDate: normalizeDueDate(payload.dueDate),
       }),
     }),
 
@@ -79,7 +92,7 @@ export const api = {
       body: JSON.stringify({
         ...patch,
         ...(patch.hasOwnProperty("dueDate")
-          ? { dueDate: toIsoOrNull(patch.dueDate) ?? null }
+          ? { dueDate: normalizeDueDate(patch.dueDate) ?? null }
           : {}),
       }),
     }),

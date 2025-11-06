@@ -77,7 +77,19 @@ export default function App() {
   const [shareOpen, setShareOpen] = useState(false);
 
   const { user: me } = useAuth();
-  const isOwner = !!(editingTask && me && editingTask.ownerId === me.id);
+
+  const normId = (v?: string) => (v ? v.toLowerCase().replace(/-/g, "") : "");
+  const norm = (v?: string) => (v ? v.toLowerCase() : "");
+
+  const meId = normId(me?.id);
+  const meEmail = norm(me?.email);
+
+  const ownerId = normId(editingTask?.ownerId as any);
+  const ownerEmail = norm(editingTask?.ownerEmail as any);
+
+  const isOwner =
+    (!!meId && !!ownerId && meId === ownerId) ||
+    (!!meEmail && !!ownerEmail && meEmail === ownerEmail);
 
   return (
     <div className="min-h-screen bg-background">

@@ -13,7 +13,13 @@ import {
   getIdToken,
 } from "firebase/auth";
 
-type User = { id: string; email: string; name: string; avatarUrl?: string };
+type User = {
+  id: string;
+  email: string;
+  name: string;
+  avatarUrl?: string;
+  firebaseUid?: string;
+};
 type AuthContextValue = {
   user: User | null;
   loading: boolean;
@@ -24,6 +30,26 @@ type AuthContextValue = {
 
 const API = import.meta.env.VITE_API_URL;
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+async function exchangeAndFetchMe(idToken: string) {
+  // 1) Обменять Firebase токен на сессию бэка
+  const ok = await fetch(`${API}/auth/google`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken }),
+    credentials: "include",
+  });
+  if (!ok.ok) throw new Error("Auth failed");
+
+  // 2) Получить MeDto с UUID
+  const meRes = await fetch(`${API}/api/me`, { credentials: "include" });
+  if (!meRes.ok) throw new Error("Fetch /api/me failed");
+  return (await meRes.json()) as {
+    id: string;
+    email: string;
+    displayName?: string;
+  };
+}
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({
   children,
@@ -42,6 +68,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({
       try {
         // 1) беремо ID token від Google/Firebase
         const idToken = await getIdToken(fbUser, /*forceRefresh*/ true);
+        const me = await exchangeAndFetchMe(idToken);
 
         // 2) віддаємо його бекенду для перевірки і видачі вашого JWT/сесії
         const res = await fetch(`${API}/auth/google`, {
@@ -54,10 +81,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({
 
         // 3) локальний user для UI (можеш також зчитати з відповіді бека)
         setUser({
-          id: fbUser.uid,
-          email: fbUser.email ?? "",
-          name: fbUser.displayName ?? "",
+          id: me.id, // 👈 UUID с бэка
+          email: me.email,
+          name: me.displayName ?? fbUser.displayName ?? "",
           avatarUrl: fbUser.photoURL ?? undefined,
+          firebaseUid: fbUser.uid,
         });
       } catch {
         setUser(null);
@@ -82,7 +110,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({
     } finally {
       await signOut(auth);
       setUser(null);
-      window.location.href = "/login"; // или useNavigate('/login'
+      window.location.href = "/login";
     }
   };
 
@@ -95,17 +123,19 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({
         return;
       }
       const idToken = await getIdToken(fbUser, true);
-      await fetch(`${API}/auth/google`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-        credentials: "include",
-      });
+      const me = await exchangeAndFetchMe(idToken);
+      // await fetch(`${API}/auth/google`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ idToken }),
+      //   credentials: "include",
+      // });
       setUser({
-        id: fbUser.uid,
-        email: fbUser.email ?? "",
-        name: fbUser.displayName ?? "",
+        id: me.id, // 👈 UUID с бэка
+        email: me.email,
+        name: me.displayName ?? fbUser.displayName ?? "",
         avatarUrl: fbUser.photoURL ?? undefined,
+        firebaseUid: fbUser.uid,
       });
     } catch (e) {
       // опционально — мягкий лог/показ тоста
