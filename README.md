@@ -78,7 +78,7 @@
 ---
 ### Traceability
 - Linked to [User Stories](./docs/3_UserStories.md)
-- Linked to [Use Case Diagram](./4_UseCaseDiagram.md)
+- Linked to [Use Case Diagram](./docs/4_UseCaseDiagram.md)
   
 © 2025 Anastasiia Desiateryk — Internal Project Documentation
 
